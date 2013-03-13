@@ -1,0 +1,60 @@
+* About
+
+=help.sh= is a bash-script for providing your scripts with an
+interactive help command similar to bash's builtin =help= or =git
+help=.  The help text is extracted from the script itself using
+specially formatted comments.
+
+* License & Copyright
+
+(C) Copyright 2013 Dario Hamidi <dario.hamidi@gmail.com>
+
+This program is released under the GPL version 3, that you should have
+received together with this program (see [[./LICENSE][LICENSE]]).
+
+* Usage
+
+For up-to-date information about the usage of challoc, have a look at
+the initial comments in [[file:help.sh][help.sh]].  An example of how to use this script
+can be found in [[file:use-help.sh][use-help.sh]].
+
+* Syntax
+
+=help.sh= works by parsing bash comments preceding a function
+definition.  Documentation for a command is introduced by a line
+starting with a hash sign ("#") followed by an at sign ("@"), followed
+by the name of the command.
+
+#+BEGIN_EXAMPLE
+#@my-command
+#+END_EXAMPLE
+
+A line beginning with a hash sign followed by a plus ("+") should
+follow immediately.  The part of the line after the plus is used
+literally as the brief command summary.
+
+#+BEGIN_EXAMPLE
+#@my-command
+#+this command does something really useful
+#+END_EXAMPLE
+
+All remaining lines starting with a hash sign are stripped of the hash
+sign and copied into the description string for this command.  The
+description is ended by a line beginning with the word function.
+
+#+BEGIN_EXAMPLE
+#@my-command
+#+this command does something really useful
+#
+# This is the long description of my-command.
+#
+function my-command {
+    return 0
+}
+#+END_EXAMPLE
+
+The environment variable =HELP_BOL= ("beginning of line") controls whether
+whitespace at the beginning of a line is ignored when looking for a
+command's documentation.  When it is set to "yes" (the default), then
+only comments beginning in column 0 are recognized by the parser.
+
